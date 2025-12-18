@@ -7,3 +7,10 @@ td *{
 .borderText{
     -webkit-text-stroke: 1px var(--color-blue-200) ;
 }
+ 
+.bb-half {
+  border-bottom: 0.5px solid #ffffff80;
+}
+.bt-half {
+  border-top: 0.5px solid #ffffff80;
+}

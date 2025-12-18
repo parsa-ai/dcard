@@ -2,6 +2,8 @@
 "use client";
 import { useState } from 'react';
 import { Search, Eye, ChevronLeft, ChevronRight, UserCheck, UserX, PencilIcon, Trash2Icon } from 'lucide-react';
+import SamanCardIcon from '@/app/components/icons/cards/SamanCardIcon';
+import RefahCardIcon from '@/app/components/icons/cards/RefahCardIcon';
 
 interface Card {
     id: number;
@@ -31,6 +33,10 @@ const usersData: User[] = [
         cards: [
             { id: 1, number: "6037....1234", year: "05", month: "12", cvv2: "123", isBlocked: 0 },
             { id: 2, number: "5892....5678", year: "06", month: "01", cvv2: "456", isBlocked: 0 },
+            { id: 3, number: "5892....5678", year: "06", month: "01", cvv2: "456", isBlocked: 0 },
+            { id: 4, number: "6037....1234", year: "05", month: "12", cvv2: "123", isBlocked: 0 },
+            { id: 5, number: "5892....5678", year: "06", month: "01", cvv2: "456", isBlocked: 0 },
+            { id: 6, number: "5892....5678", year: "06", month: "01", cvv2: "456", isBlocked: 0 },
         ]
     },
     {
@@ -67,20 +73,19 @@ export default function UsersPage() {
         <div className="space-y-6">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <h1 className="text-2xl font-bold text-gray-800">مدیریت کاربران</h1>
-
                 <div className="flex flex-wrap gap-3 w-full md:w-auto">
                     <div className="relative flex-1 md:w-64">
                         <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                         <input
                             type="text"
                             placeholder="جستجوی نام یا شماره تلفن..."
-                            className="w-full pr-10 pl-4 py-2 border border-gray-100 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none"
+                            className="w-full pr-10 pl-4 py-2 border border-gray-100 rounded-lg focus:outline-none "
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
                     <select
-                        className="border border-gray-100  rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary focus:outline-none bg-white"
+                        className="border border-gray-100  rounded-lg px-4 py-2 focus:outline-none bg-white "
                         value={statusFilter}
                         onChange={(e) => setStatusFilter(e.target.value as any)}
                     >
@@ -106,33 +111,32 @@ export default function UsersPage() {
                     </thead>
                     <tbody className=''>
                         {usersData.map((user) => (
-                            <tr key={user.id} className="border-b  border-gray-100 hover:bg-gray-50 transition-colors">
+                            <tr key={user.id} className="border-b  border-gray-100  transition-colors">
                                 <td className="p-4">{user.name} {user.lastName}</td>
                                 <td className="p-4 font-mono">{user.phone}</td>
                                 <td className="p-4">
                                     <button
                                         onClick={() => setSelectedUserCards(user.cards)}
-                                        className="text-primary justify-center  hover:underline flex items-center gap-1"
-                                    >
-                                        <Eye size={20} />
+                                        className="text-blue-950 hover:text-blue-600 p-2 transition  justify-center  hover:underline flex items-center gap-1">
+                                        مشاهده
                                     </button>
                                 </td>
                                 <td className="p-4">
                                     {user.isActive === 1 ? (
                                         <span className="flex items-center gap-1 text-green-600 bg-green-50 w-fit px-2 py-1 rounded-full text-sm">
-                                            <UserCheck size={14} /> فعال
+                                            فعال
                                         </span>
                                     ) : (
                                         <span className="flex items-center gap-1 text-red-600 bg-red-50 w-fit px-2 py-1 rounded-full text-sm">
-                                            <UserX size={14} /> غیرفعال
+                                            غیرفعال
                                         </span>
                                     )}
                                 </td>
                                 <td className="p-4">
-                                    <button><PencilIcon size={20}/></button>
+                                    <button className='text-blue-950 hover:bg-blue-50 rounded-full p-1.5 transition'><PencilIcon size={20} /></button>
                                 </td>
                                 <td className="p-4">
-                                    <button className='text-red-700'><Trash2Icon size={20}/></button>
+                                    <button className='text-red-600 hover:bg-red-50 rounded-full p-1.5 transition'><Trash2Icon size={20} /></button>
                                 </td>
 
                             </tr>
@@ -154,22 +158,18 @@ export default function UsersPage() {
             </div>
 
             {selectedUserCards && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-xl">
+                <div className="fixed inset-0 bg-black/50 flex items-center  justify-center z-50 p-4">
+                    <div className="bg-white rounded-2xl max-w-6xl  w-full p-6 shadow-xl">
                         <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-xl font-bold">لیست کارت‌های کاربر</h3>
+                            <h3 className="text-xl font-bold"> کارت‌های کاربر</h3>
                             <button onClick={() => setSelectedUserCards(null)} className="text-gray-500 hover:text-black text-2xl">&times;</button>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-h-100 overflow-y-auto  " dir='ltr'>
                             {selectedUserCards.map(card => (
-                                <div key={card.id} className={`p-4 border border-gray-100 rounded-xl ${card.isBlocked ? 'bg-red-50 border-red-100' : 'bg-blue-50 border-blue-100'}`}>
-                                    <p className="font-mono text-lg mb-2 text-center tracking-widest">{card.number}</p>
-                                    <div className="flex justify-between text-sm text-gray-600">
-                                        <span>CVV2: {card.cvv2}</span>
-                                        <span>تاریخ: {card.year}/{card.month}</span>
-                                    </div>
-                                    {card.isBlocked === 1 && <p className="text-red-600 text-xs mt-2 font-bold">بلاک شده</p>}
-                                </div>
+                                <>
+                                    <SamanCardIcon></SamanCardIcon>
+
+                                </>
                             ))}
                         </div>
                     </div>
