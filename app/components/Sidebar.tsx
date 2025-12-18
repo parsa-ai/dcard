@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Users, CreditCard, LayoutDashboard, LogOutIcon } from 'lucide-react';
+import { Users, CreditCard, LogOutIcon } from 'lucide-react';
 import Image from 'next/image';
 
 const Sidebar = () => {

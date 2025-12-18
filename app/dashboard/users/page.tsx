@@ -1,15 +1,19 @@
 
 "use client";
 import { useState } from 'react';
-import { Search,  ChevronLeft, ChevronRight,   PencilIcon, Trash2Icon } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight, PencilIcon, Trash2Icon } from 'lucide-react';
 import { Card } from '@/lib/type';
-import { usersData } from '@/lib/data';
+import { banks, usersData } from '@/lib/data';
+import Image from 'next/image';
+import { detectBank } from '@/lib/unit';
 
 
 export default function UsersPage() {
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState<"all" | "active" | "inactive">("all");
     const [selectedUserCards, setSelectedUserCards] = useState<Card[] | null>(null);
+
+   
 
     return (
         <div className="space-y-6">
@@ -38,7 +42,6 @@ export default function UsersPage() {
                 </div>
             </div>
 
-            {/* جدول کاربران */}
             <div className="overflow-x-auto border border-gray-100  rounded-xl">
                 <table className="w-full text-center border-collapse">
                     <thead className="bg-gray-50 border-b border-gray-300">
@@ -100,18 +103,28 @@ export default function UsersPage() {
             </div>
 
             {selectedUserCards && (
-                <div className="fixed inset-0 bg-black/50 flex items-center  justify-center z-50 p-4">
-                    <div className="bg-white rounded-2xl max-w-6xl  w-full p-6 shadow-xl">
+                <div className="fixed inset-0 bg-white/50 backdrop-blur-xs flex items-center  justify-center z-50 p-4 "  onClick={() => setSelectedUserCards(null)}>
+                    <div className="bg-white rounded-2xl max-w-6xl  w-full p-6 shadow-[0_0_20px] shadow-blue-500/30 -z-20">
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="text-xl font-bold"> کارت‌های کاربر</h3>
-                            <button onClick={() => setSelectedUserCards(null)} className="text-gray-500 hover:text-black text-2xl">&times;</button>
+                            <button onClick={() => setSelectedUserCards(null)} className="text-gray-500 hover:text-black text-4xl">&times;</button>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-h-100 overflow-y-auto  " dir='ltr'>
-                            {selectedUserCards.map(card => (
-                                <>
-                                    
-                                </>
-                            ))}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-h-130 overflow-y-auto " dir='ltr'>
+                            {selectedUserCards.map(card => {
+                                const bankIcon = detectBank(card.number, banks);
+                                return (
+                                    <div className='flex items-end justify-end relative min-h-51 '>
+                                        <Image src={`/images/icons/${bankIcon}.png`} className='w-full absolute -z-10 object-cover h-full rounded-2xl' width={300} height={160} alt={bankIcon} />
+                                        <div className='m-4 w-full  text-black/70'>
+                                            <p className='w-full text-3xl  text-center space-x-3.5 tracking-[0.4rem] mb-8 font-semibold'>{card?.number}</p>
+                                            <div className='flex justify-between w-full'>
+                                                <p>CVV2: {card?.cvv2 || "نامشخص"}</p>
+                                                <p>انقضا: {card?.month}/{card?.year}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            })}
                         </div>
                     </div>
                 </div>
