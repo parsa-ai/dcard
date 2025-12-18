@@ -1,69 +1,11 @@
 
 "use client";
 import { useState } from 'react';
-import { Search, Eye, ChevronLeft, ChevronRight, UserCheck, UserX, PencilIcon, Trash2Icon } from 'lucide-react';
-import SamanCardIcon from '@/app/components/icons/cards/SamanCardIcon';
-import RefahCardIcon from '@/app/components/icons/cards/RefahCardIcon';
+import { Search,  ChevronLeft, ChevronRight,   PencilIcon, Trash2Icon } from 'lucide-react';
+import { Card } from '@/lib/type';
+import { usersData } from '@/lib/data';
 
-interface Card {
-    id: number;
-    year: string;
-    month: string;
-    number: string;
-    cvv2: string;
-    isBlocked: 0 | 1;
-}
 
-interface User {
-    id: number;
-    name: string;
-    lastName: string;
-    phone: string;
-    cards: Card[];
-    isActive: 0 | 1;
-}
-
-const usersData: User[] = [
-    {
-        id: 101,
-        name: "علی",
-        lastName: "محمدی",
-        phone: "09123456789",
-        isActive: 1,
-        cards: [
-            { id: 1, number: "6037....1234", year: "05", month: "12", cvv2: "123", isBlocked: 0 },
-            { id: 2, number: "5892....5678", year: "06", month: "01", cvv2: "456", isBlocked: 0 },
-            { id: 3, number: "5892....5678", year: "06", month: "01", cvv2: "456", isBlocked: 0 },
-            { id: 4, number: "6037....1234", year: "05", month: "12", cvv2: "123", isBlocked: 0 },
-            { id: 5, number: "5892....5678", year: "06", month: "01", cvv2: "456", isBlocked: 0 },
-            { id: 6, number: "5892....5678", year: "06", month: "01", cvv2: "456", isBlocked: 0 },
-        ]
-    },
-    {
-        id: 101,
-        name: "علی",
-        lastName: "محمدی",
-        phone: "09123456789",
-        isActive: 1,
-        cards: [
-            { id: 1, number: "6037....1234", year: "05", month: "12", cvv2: "123", isBlocked: 0 },
-            { id: 2, number: "5892....5678", year: "06", month: "01", cvv2: "456", isBlocked: 0 },
-        ]
-    },
-
-    {
-        id: 101,
-        name: "علی",
-        lastName: "محمدی",
-        phone: "09123456789",
-        isActive: 0,
-        cards: [
-            { id: 1, number: "6037....1234", year: "05", month: "12", cvv2: "123", isBlocked: 0 },
-            { id: 2, number: "5892....5678", year: "06", month: "01", cvv2: "456", isBlocked: 0 },
-        ]
-    },
-
-];
 export default function UsersPage() {
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState<"all" | "active" | "inactive">("all");
@@ -167,8 +109,7 @@ export default function UsersPage() {
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-h-100 overflow-y-auto  " dir='ltr'>
                             {selectedUserCards.map(card => (
                                 <>
-                                    <SamanCardIcon></SamanCardIcon>
-
+                                    
                                 </>
                             ))}
                         </div>

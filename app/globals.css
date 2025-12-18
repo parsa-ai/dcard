@@ -14,3 +14,7 @@ td *{
 .bt-half {
   border-top: 0.5px solid #ffffff80;
 }
+
+.imgF{
+  filter: brightness(0) invert(1);
+}
