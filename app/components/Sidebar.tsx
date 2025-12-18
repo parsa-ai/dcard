@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Users, CreditCard, LayoutDashboard, LogOutIcon } from 'lucide-react';
+import Image from 'next/image';
 
 const Sidebar = () => {
     const menuItems = [
@@ -9,8 +10,9 @@ const Sidebar = () => {
 
     return (
         <aside className="w-64 bg-blue-700 h-screen border-l rounded-l-4xl border-gray-200 fixed right-0 top-0 flex flex-col">
-            <div className="">
-                <h1 className="text-2xl font-bold bb-half p-6 pb-5 text-white text-center">پنل مدیریت</h1>
+            <div className="flex gap-7 pb-5 p-6 bb-half ">
+                <Image src="/images/logo/logo.png" width={44} height={44} alt='logo' className='min-w-11 min-h-11 max-w-11 max-h-11 w-11 h-11'></Image>
+                <h1 className="text-2xl font-bold   text-white text-center ">پنل مدیریت</h1>
             </div>
             <nav className="flex-1 p-4 space-y-2">
                 {menuItems.map((item) => (
