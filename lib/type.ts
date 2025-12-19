@@ -1,10 +1,9 @@
 export interface Card {
-    id: number;
-    year: string;
-    month: string;
-    number: string;
+    exYear: string;
+    exMonth: string;
+    pan: string;
     cvv2: string;
-    isBlocked: 0 | 1;
+    use: 0 | 1;
 }
 
 export interface User {
@@ -12,6 +11,6 @@ export interface User {
     name: string;
     lastName: string;
     phone: string;
-    cards: Card[];
+    cards: string;
     isActive: 0 | 1;
 }

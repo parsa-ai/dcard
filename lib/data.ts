@@ -46,12 +46,12 @@ const usersData: User[] = [
         phone: "09123456789",
         isActive: 1,
         cards: [
-            { id: 1, number: "610433....1234", year: "05", month: "12", cvv2: "123", isBlocked: 0 },
-            { id: 2, number: "603769....5678", year: "06", month: "01", cvv2: "456", isBlocked: 0 },
-            { id: 3, number: "621986....5678", year: "06", month: "01", cvv2: "456", isBlocked: 0 },
-            { id: 4, number: "502229....1234", year: "05", month: "12", cvv2: "123", isBlocked: 0 },
-            { id: 5, number: "502938....5678", year: "06", month: "01", cvv2: "456", isBlocked: 0 },
-            { id: 6, number: "622106....5678", year: "06", month: "01", cvv2: "456", isBlocked: 0 },
+            { id: 1, pan: "610433....1234", exYear: "05", exMonth: "12", cvv2: "123", use: 0 },
+            { id: 2, pan: "603769....5678", exYear: "06", exMonth: "01", cvv2: "456", use: 0 },
+            { id: 3, pan: "621986....5678", exYear: "06", exMonth: "01", cvv2: "456", use: 0 },
+            { id: 4, pan: "502229....1234", exYear: "05", exMonth: "12", cvv2: "123", use: 0 },
+            { id: 5, pan: "502938....5678", exYear: "06", exMonth: "01", cvv2: "456", use: 0 },
+            { id: 6, pan: "622106....5678", exYear: "06", exMonth: "01", cvv2: "456", use: 0 },
         ]
     },
     {
@@ -61,8 +61,8 @@ const usersData: User[] = [
         phone: "09123456789",
         isActive: 1,
         cards: [
-            { id: 1, number: "6037....1234", year: "05", month: "12", cvv2: "123", isBlocked: 0 },
-            { id: 2, number: "5892....5678", year: "06", month: "01", cvv2: "456", isBlocked: 0 },
+            { id: 1, pan: "6037....1234", exYear: "05", exMonth: "12", cvv2: "123", use: 0 },
+            { id: 2, pan: "5892....5678", exYear: "06", exMonth: "01", cvv2: "456", use: 0 },
         ]
     },
 
@@ -73,8 +73,8 @@ const usersData: User[] = [
         phone: "09123456789",
         isActive: 0,
         cards: [
-            { id: 1, number: "6037....1234", year: "05", month: "12", cvv2: "123", isBlocked: 0 },
-            { id: 2, number: "5892....5678", year: "06", month: "01", cvv2: "456", isBlocked: 0 },
+            { id: 1, pan: "6037....1234", exYear: "05", exMonth: "12", cvv2: "123", use: 0 },
+            { id: 2, pan: "5892....5678", exYear: "06", exMonth: "01", cvv2: "456", use: 0 },
         ]
     },
 
