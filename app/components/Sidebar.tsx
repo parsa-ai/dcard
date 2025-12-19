@@ -13,7 +13,7 @@ const Sidebar = () => {
     const [isOpen, setIsopen] = useState(true)
     return (
         <>
-            <aside className={`bg-blue-700 h-screen border-l rounded-l-4xl border-gray-200 hidden lg:flex flex-col transition-all relative ${isOpen ? "w-64" : "w-22"}`}>
+            <aside className={`sticky top-0 h-screen bg-blue-700 border-l rounded-l-4xl border-gray-200 hidden lg:flex flex-col transition-all  ${isOpen ? "w-64" : "w-22"}`}>
                 <div onClick={() => setIsopen(!isOpen)} className={`cursor-pointer ${isOpen ? "rotate-x-0" : "rotate-180"} absolute -left-5 bg-white rounded-full p-2 text-blue-700 top-17 border  border-blue`}><ChevronsRightIcon size={20} /></div>
                 <div className="flex gap-5 pb-5 p-6 bb-half ">
                     <Image src="/images/logo/logo.png" width={44} height={44} alt='logo' className='min-w-11 min-h-11 max-w-11 max-h-11 w-11 h-11 imgF'></Image>

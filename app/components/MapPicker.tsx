@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import L from 'leaflet';
@@ -19,86 +19,74 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
-function MapSearchControl() {
+function MapSearchControl({ onLocationSelected }: { onLocationSelected: (pos: [number, number]) => void }) {
   const map = useMapEvents({});
 
   useEffect(() => {
     const provider = new OpenStreetMapProvider({
-      params: {
-        countrycodes: 'ir',
-        addressdetails: 1,
-      },
+      params: { countrycodes: 'ir', addressdetails: 1 },
     });
 
     const searchControl = new (GeoSearchControl as any)({
       provider,
       showMarker: true,
-      showPopup: false,
-      marker: {
-        draggable: true,
-      },
+      marker: { draggable: true },
       autoClose: true,
       keepResult: true,
       searchLabel: 'جستجوی مکان...',
-      style: 'bar',
+      style: 'bar', 
     });
 
     map.addControl(searchControl);
 
     map.on('geosearch/showlocation', (result: any) => {
-      if (result.marker) {
-        result.marker.dragging?.enable();
-        result.marker.on('dragend', () => {
-          const latlng = result.marker.getLatLng();
-          setPosition([latlng.lat, latlng.lng]);
-        });
+      if (result.location) {
+        onLocationSelected([result.location.y, result.location.x]);
       }
     });
 
-    return () => {
-      map.removeControl(searchControl);
-    };
-  }, [map]);
+    return () => { map.removeControl(searchControl); };
+  }, [map, onLocationSelected]);
 
   return null;
 }
 
-let setPosition: (pos: [number, number] | null) => void = () => { };
-
 export default function MapPicker() {
-  const [position, setPos] = useState<[number, number] | null>(null);
-  setPosition = setPos;
-
+  const [position, setPosition] = useState<[number, number] | null>(null);
   const defaultCenter: [number, number] = [35.6892, 51.3890];
-
+  
   function ClickHandler() {
     useMapEvents({
       click(e) {
-        const { lat, lng } = e.latlng;
-        setPosition([lat, lng]);
+        setPosition([e.latlng.lat, e.latlng.lng]);
       },
     });
     return null;
   }
-
-
+  function sendData() {
+    console.log({ lat: position[0] , lng: position[1] });
+    
+  }
 
   return (
-    <div className="space-y-6">
-      <p className='text-2xl font-bold'> تست پرداخت</p>
-      <div className="rounded-lg overflow-hidden shadow-lg border border-gray-200">
+    
+    <div className="flex flex-col space-y-4 p-2 md:p-6 max-w-full overflow-x-hidden">
+      <p className='text-xl md:text-2xl font-bold text-center md:text-right'>تست پرداخت</p>
+      
+      <div className="rounded-xl overflow-hidden shadow-md border border-gray-200 relative">
         <MapContainer
           center={position ?? defaultCenter}
-          zoom={position ? 15 : 10}
+          zoom={12}
           scrollWheelZoom={true}
-          style={{ height: '500px', width: '100%' }}
+
+          style={{ height: '50vh', minHeight: '320px', width: '100%' }}
         >
           <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            attribution='&copy; OpenStreetMap'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
 
-          <MapSearchControl />
+          <MapSearchControl onLocationSelected={setPosition} />
           <ClickHandler />
 
           {position && (
@@ -107,8 +95,7 @@ export default function MapPicker() {
               draggable={true}
               eventHandlers={{
                 dragend: (e) => {
-                  const marker = e.target as L.Marker;
-                  const pos = marker.getLatLng();
+                  const pos = e.target.getLatLng();
                   setPosition([pos.lat, pos.lng]);
                 },
               }}
@@ -117,34 +104,34 @@ export default function MapPicker() {
         </MapContainer>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium mb-2">عرض جغرافیایی (Latitude)</label>
+      {/* بخش ورودی‌ها بصورت ریسپانسیو */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="flex flex-col">
+          <label className="text-xs font-medium mb-1 text-gray-600">عرض جغرافیایی</label>
           <input
             type="text"
             value={position ? position[0].toFixed(6) : ''}
             readOnly
-            className="w-full px-4 py-2 border border-gray-200  rounded-lg "
+            className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-gray-50 text-sm"
           />
         </div>
-        <div>
-          <label className="block text-sm font-medium mb-2">طول جغرافیایی (Longitude)</label>
+        <div className="flex flex-col">
+          <label className="text-xs font-medium mb-1 text-gray-600">طول جغرافیایی</label>
           <input
             type="text"
             value={position ? position[1].toFixed(6) : ''}
             readOnly
-            className="w-full px-4 py-2 border border-gray-200  rounded-lg"
+            className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-gray-50 text-sm"
           />
         </div>
+      </div>
 
-      </div>
-      <div>
-        <button
-          className="px-6 py-3 w-full bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-        >
-          تست پرداخت در این موقعیت
-        </button>
-      </div>
+      <button
+        onClick={sendData}
+      className="w-full py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 active:scale-95 transition-all"
+      >
+        تایید موقعیت و پرداخت
+      </button>
     </div>
   );
 }
