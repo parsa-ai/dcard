@@ -21,14 +21,13 @@ const Sidebar = () => {
                 </div>
                 <nav className="flex-1 p-4 space-y-2">
                     {menuItems.map((item) => {
-                        let Icon = item.Icon
                         return (
                             <Link
                                 key={item.href}
                                 href={item.href}
                                 className="flex items-center gap-3 px-4 py-3 text-white hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"
                             >
-                                {Icon}
+                                {item.Icon}
                                 {isOpen && <span className="font-medium">{item.name}</span>}
                             </Link>
                         )
@@ -44,14 +43,13 @@ const Sidebar = () => {
             <aside className='fixed lg:hidden w-full bottom-0 right-0 p-5 '>
                 <nav className='bg-blue-700 rounded-2xl h-13 md:h-20 flex justify-center items-center gap-15 text-white'>
                     {menuItems.map((item) => {
-                        let Icon = item.Icon
                         return (
                             <Link
                                 key={item.href}
                                 href={item.href}
                                 className="flex items-center gap-3 px-4 py-3 text-white hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"
                             >
-                                {Icon}
+                                {item.Icon}
                                 <span className="font-medium hidden md:block">{item.name}</span>
                             </Link>
                         )

@@ -120,10 +120,10 @@ export default function UsersPage() {
                             <button onClick={() => setSelectedUserCards(null)} className="text-gray-500 hover:text-black text-4xl">&times;</button>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 max-h-130 overflow-y-auto " dir='ltr'>
-                            {selectedUserCards.map(card => {
+                            {selectedUserCards.map((card , index) => {
                                 const bankIcon = detectBank(card.number, banks);
                                 return (
-                                    <div className='flex items-end justify-end relative min-h-70 md:min-h-70 xl:min-h-51 '>
+                                    <div key={index} className='flex items-end justify-end relative min-h-70 md:min-h-70 xl:min-h-51 '>
                                         <Image src={`/images/icons/${bankIcon}.png`} className='w-full absolute -z-10 object-cover h-full rounded-2xl ' width={300} height={160} alt={bankIcon} />
                                         <div className='m-4 w-full  text-black/70'>
                                             <p className='w-full text-2xl xl:text-3xl  text-center space-x-3.5 tracking-[0.4rem] mb-8 font-semibold'>{card?.number}</p>
