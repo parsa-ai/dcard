@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { pelak } from "@/lib/fonts";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -12,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fa" dir="rtl">
+    <html lang="fa" dir="rtl" className={pelak.className}>
       <body>
         {children}
       </body>
