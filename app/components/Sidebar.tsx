@@ -7,7 +7,7 @@ import { useState } from 'react';
 const Sidebar = () => {
     const menuItems = [
         { name: 'مدیریت کاربران', Icon: <Users size={20} />, href: '/dashboard/users' },
-        { name: 'کارت‌های بلاک شده', Icon: <CreditCard size={20} />, href: '/dashboard/blocked-cards' },
+        { name: 'تست پرداخت', Icon: <CreditCard size={20} />, href: '/dashboard/map' },
     ];
 
     const [isOpen, setIsopen] = useState(true)
