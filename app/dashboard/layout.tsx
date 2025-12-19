@@ -1,4 +1,3 @@
-import Sidebar from '../components/Sidebar';
 
 export const metadata = {
     title: 'Admin Panel',
@@ -12,7 +11,6 @@ export default function DashboardLayout({
 }) {
     return (
         <div className="flex overflow-hidden">
-            <Sidebar />
 
             <main className="flex-1 min-h-screen p-8">
                 <section className="bg-white rounded-xl  border border-gray-200 p-6">
