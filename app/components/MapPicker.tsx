@@ -67,11 +67,11 @@ function MapSearchControl({ onLocationSelected }: { onLocationSelected: (pos: [n
 }
 
 const userI = {
-  token: "d34eb182f5625df3962b6370fdb4a34c61",
-  pan: "6037997207651960",
-  exMonth: "02",
-  exYear: "04",
-  cvv2: "234",
+  token: "ad70e7a684999a2331b8f058f4f5fd5c05",
+  pan: "6063586245266589",
+  exMonth: "08",
+  exYear: "03",
+  cvv2: "123",
 }
 export default function MapPicker() {
   const [position, setPosition] = useState<[number, number] | null>(null);
@@ -163,20 +163,31 @@ export default function MapPicker() {
         <div className="flex flex-col">
           <label className="text-xs font-medium mb-1 text-gray-600">عرض جغرافیایی (Latitude)</label>
           <input
-            type="text"
-            value={position ? position[0].toFixed(6) : '-'}
-            readOnly
-            className="w-full focus:outline-0 px-3 py-2 border border-gray-200 rounded-lg bg-gray-100 text-sm"
+            type="number"
+            step="0.01"
+            value={position ? position[0] : ''}
+            onChange={(e) =>
+              setPosition((prev) =>
+                prev ? [Number(e.target.value), prev[1]] : [Number(e.target.value), defaultCenter[1]]
+              )
+            }
+            className="w-full focus:outline-0 px-3 py-2 border border-gray-200 rounded-lg bg-white text-sm"
           />
         </div>
         <div className="flex flex-col">
           <label className="text-xs font-medium mb-1 text-gray-600">طول جغرافیایی (Longitude)</label>
           <input
-            type="text"
-            value={position ? position[1].toFixed(6) : '-'}
-            readOnly
-            className="w-full focus:outline-0 px-3 py-2 border border-gray-200 rounded-lg bg-gray-100 text-sm"
+            type="number"
+            step="0.01"
+            value={position ? position[1] : ''}
+            onChange={(e) =>
+              setPosition((prev) =>
+                prev ? [prev[0], Number(e.target.value)] : [defaultCenter[0], Number(e.target.value)]
+              )
+            }
+            className="w-full focus:outline-0 px-3 py-2 border border-gray-200 rounded-lg bg-white text-sm"
           />
+
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

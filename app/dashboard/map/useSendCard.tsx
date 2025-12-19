@@ -12,6 +12,8 @@ interface UseSendCardProps {
     token: string
 }
 export default async function useSendCard({ datas }: { datas: UseSendCardProps }) {
+    console.log(datas);
+    
     const data = new URLSearchParams(datas.data);
     try {
         const response = await fetch(
