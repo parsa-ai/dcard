@@ -70,7 +70,7 @@ const userI = {
   token: "d34eb182f5625df3962b6370fdb4a34c61",
   pan: "6037997207651960",
   exMonth: "02",
-  exYear:"04",
+  exYear: "04",
   cvv2: "234",
 }
 export default function MapPicker() {
@@ -111,9 +111,12 @@ export default function MapPicker() {
       };
 
       const result = await useSendCard({ datas: payload });
-
-      console.log('نتیجه پرداخت:', result);
-      alert('درخواست پرداخت ارسال شد');
+      if (result.ok) {
+        alert('درخواست پرداخت با موفقیت ارسال شد');
+      }
+      else {
+        throw new Error("Payment request failed");
+      }
     } catch (error) {
       console.error(error);
       alert('خطا در ارسال درخواست پرداخت');
