@@ -10,7 +10,8 @@ import 'leaflet-geosearch/dist/geosearch.css';
 
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 import 'leaflet-defaulticon-compatibility';
-// کامپوننت کلیک روی نقشه
+import useSendCard from '../dashboard/map/useSendCard';
+
 function MapClickHandler({ onPositionChange }: { onPositionChange: (pos: [number, number]) => void }) {
   useMapEvents({
     click(e) {
@@ -20,15 +21,13 @@ function MapClickHandler({ onPositionChange }: { onPositionChange: (pos: [number
   return null;
 }
 
-// کامپوننت سرچ (فقط روی دسکتاپ نمایش داده می‌شه)
 function MapSearchControl({ onLocationSelected }: { onLocationSelected: (pos: [number, number]) => void }) {
   const map = useMapEvents({});
 
-  // تشخیص موبایل با استفاده از window (ایمن در کلاینت)
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   useCallback(() => {
-    if (isMobile) return; // در موبایل سرچ بار رو نشون نده
+    if (isMobile) return;
 
     const provider = new OpenStreetMapProvider({
       params: { countrycodes: 'ir', addressdetails: 1 },
@@ -47,12 +46,10 @@ function MapSearchControl({ onLocationSelected }: { onLocationSelected: (pos: [n
 
     map.addControl(searchControl);
 
-    // وقتی مکان انتخاب شد
     map.on('geosearch/showlocation', (result: any) => {
       const { x: lng, y: lat } = result.location;
       onLocationSelected([lat, lng]);
 
-      // اگر مارکر درگ شد
       if (result.marker) {
         result.marker.on('dragend', (e: any) => {
           const latlng = e.target.getLatLng();
@@ -69,31 +66,62 @@ function MapSearchControl({ onLocationSelected }: { onLocationSelected: (pos: [n
   return null;
 }
 
+const userI = {
+  token: "d34eb182f5625df3962b6370fdb4a34c61",
+  pan: "6037997207651960",
+  exMonth: "02",
+  exYear:"04",
+  cvv2: "234",
+}
 export default function MapPicker() {
   const [position, setPosition] = useState<[number, number] | null>(null);
+  const [pin2, setPin2] = useState('');
+  const [amount, setAmount] = useState('');
+
   const defaultCenter: [number, number] = [35.6892, 51.3890];
 
   const handlePositionChange = (newPos: [number, number]) => {
     setPosition(newPos);
   };
 
-  const sendData = () => {
+  const sendData = async () => {
     if (!position) {
       alert('لطفاً یک موقعیت روی نقشه انتخاب کنید');
       return;
     }
 
-    console.log('موقعیت انتخاب‌شده:', {
-      latitude: position[0].toFixed(6),
-      longitude: position[1].toFixed(6),
-    });
+    if (!pin2 || !amount) {
+      alert('لطفاً رمز و مبلغ را وارد کنید');
+      return;
+    }
 
-    // اینجا می‌تونی به API بفرستی یا فرم رو سابمیت کنی
-    // مثلاً: router.push('/payment?lat=...&lng=...')
+    try {
+      const payload = {
+        data: {
+          lat: position[0].toFixed(6),
+          long: position[1].toFixed(6),
+          pan: userI.pan,
+          exMonth: userI.exMonth,
+          exYear: userI.exYear,
+          cvv2: userI.cvv2,
+          pin2: pin2,
+          amount: amount,
+        },
+        token: userI.token,
+      };
+
+      const result = await useSendCard({ datas: payload });
+
+      console.log('نتیجه پرداخت:', result);
+      alert('درخواست پرداخت ارسال شد');
+    } catch (error) {
+      console.error(error);
+      alert('خطا در ارسال درخواست پرداخت');
+    }
   };
 
   return (
-    <div className="flex flex-col space-y-4 p-2 md:p-6 max-w-full overflow-x-hidden">
+    <div className="mb-10 lg:mb-0 flex flex-col space-y-4 p-2 md:p-6 max-w-full overflow-x-hidden">
       <p className="text-xl md:text-2xl font-bold text-center md:text-right">تست پرداخت</p>
 
       {/* نقشه */}
@@ -128,7 +156,6 @@ export default function MapPicker() {
         </MapContainer>
       </div>
 
-      {/* نمایش مختصات */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="flex flex-col">
           <label className="text-xs font-medium mb-1 text-gray-600">عرض جغرافیایی (Latitude)</label>
@@ -136,7 +163,7 @@ export default function MapPicker() {
             type="text"
             value={position ? position[0].toFixed(6) : '-'}
             readOnly
-            className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-gray-50 text-sm"
+            className="w-full focus:outline-0 px-3 py-2 border border-gray-200 rounded-lg bg-gray-100 text-sm"
           />
         </div>
         <div className="flex flex-col">
@@ -145,22 +172,40 @@ export default function MapPicker() {
             type="text"
             value={position ? position[1].toFixed(6) : '-'}
             readOnly
-            className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-gray-50 text-sm"
+            className="w-full focus:outline-0 px-3 py-2 border border-gray-200 rounded-lg bg-gray-100 text-sm"
+          />
+        </div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="flex flex-col">
+          <label className="text-xs font-medium mb-1 text-gray-600">رمز</label>
+          <input
+            type="text"
+            value={pin2}
+            onChange={(e) => setPin2(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-white text-sm"
+          />
+        </div>
+        <div className="flex flex-col">
+          <label className="text-xs font-medium mb-1 text-gray-600">قیمت</label>
+          <input
+            type="text"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-white text-sm"
           />
         </div>
       </div>
 
-      {/* دکمه تایید */}
       <button
         onClick={sendData}
         disabled={!position}
-        className={`w-full py-3 rounded-xl font-bold transition-all ${
-          position
-            ? 'bg-blue-600 hover:bg-blue-700 active:scale-95 text-white'
-            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-        }`}
+        className={`w-full py-3 rounded-xl font-bold transition-all ${position
+          ? 'bg-blue-600 hover:bg-blue-700 active:scale-95 text-white'
+          : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+          }`}
       >
-        {position ? 'تایید موقعیت و پرداخت' : 'لطفاً موقعیت را انتخاب کنید'}
+        {position ? 'تایید موقعیت و تست پرداخت' : 'لطفاً موقعیت را انتخاب کنید'}
       </button>
     </div>
   );

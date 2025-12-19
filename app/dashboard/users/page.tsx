@@ -1,5 +1,5 @@
 import UsersPageUi from '@/app/components/UsersPageUi'
-import { usersData } from '@/lib/data'
+
 import { User } from '@/lib/type';
 
 async function UsersPage() {
